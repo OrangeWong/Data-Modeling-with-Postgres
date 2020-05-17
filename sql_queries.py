@@ -44,7 +44,7 @@ artist_table_create = ("""
     create table if not exists artists (
         artist_id varchar PRIMARY KEY, 
         name varchar,
-        lcaotion varchar,
+        location varchar,
         latitude float, 
         longitude float
         )
@@ -103,11 +103,14 @@ artist_table_insert = ("""
     insert into artists (
         artist_id, 
         name,
-        lcaotion,
+        location,
         latitude, 
         longitude
     ) values (%s, %s, %s, %s, %s)
-    on conflict (artist_id) do nothing
+    on conflict (artist_id) do update set 
+        location=EXCLUDED.location,
+        latitude=EXCLUDED.latitude, 
+        longitude=EXCLUDED.longitude
 """)
 
 
