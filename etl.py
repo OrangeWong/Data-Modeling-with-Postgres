@@ -7,6 +7,18 @@ from datetime import datetime
 
 
 def process_song_file(cur, filepath):
+    """ Process song file when the filepath of the song file is given, 
+        extract the required data from song file, and insert the data into
+        database.
+        
+    Parameters: 
+        cur (cursor): the cursor of MySQL datasbase.
+        filepath (str): the filepath of the song file that to be processed.
+    
+    Returns:
+        None
+    """
+    
     # open song file
     df = pd.read_json(filepath, lines=True)
     
@@ -28,6 +40,17 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """ Process log file when the filepath of the log file is given, 
+        then extract the required data from the file, and insert the 
+        data into database.
+        
+    Parameters: 
+        cur (cursor): the cursor of MySQL datasbase.
+        filepath (str): the filepath of the log file that to be processed.
+    
+    Returns:
+        None
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -98,6 +121,18 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """ Extract the data, and insert the processed data into the database.
+    
+    Parameters:
+        cur (cursor): the cursor of the connection of the given database.
+        conn (connection): the connection of the given database.
+        filepath (str): the filepath of the data. 
+        func (funciton): the function that used to process song or log files with choices
+            'process_song_file' and 'process_log_file'
+            
+    Returns:
+        None    
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -117,6 +152,8 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """The main function to process the data and dump into the database.
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
